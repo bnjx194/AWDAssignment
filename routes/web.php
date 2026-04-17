@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PropertyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
+Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show'); //search
