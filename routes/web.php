@@ -20,3 +20,7 @@ Route::get('/', function () {
 
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show'); //search
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
