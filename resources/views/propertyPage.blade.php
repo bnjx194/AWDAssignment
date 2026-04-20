@@ -1,3 +1,5 @@
+<x-header/>
+
 @foreach($properties as $property)
     <div class="property-card">
         <h3>{{ $property->description }}</h3>
@@ -8,3 +10,5 @@
        
     </div>
 @endforeach
+
+<x-footer/>

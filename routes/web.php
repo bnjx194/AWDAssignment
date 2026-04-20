@@ -31,3 +31,7 @@ Route::get('/property/{id}', [PropertyController::class, 'show'])->name('propert
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/sell', function () {  // yj part
+    return view('sellPage');
+});
