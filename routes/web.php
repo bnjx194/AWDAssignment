@@ -18,6 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/logout', function () {
+    auth()->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/');
+})->name('logout');
+
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show'); //search
 
