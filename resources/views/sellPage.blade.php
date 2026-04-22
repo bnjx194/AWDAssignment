@@ -1,7 +1,7 @@
 <x-header/>
     <h1 class ="title">Create Listing For Your Property</h1>
 
-<form method="POST"  >
+<form method="POST" action="/sell" enctype="multipart/form-data" onsubmit="return confirm('Do you want to list this property now?')">
     @csrf
     <div class="property-section">
         <h2>Property Details</h2><hr>
@@ -31,15 +31,15 @@
         <h2>Address</h2><hr>
         <div>
             <label for="address" class="form-label">Address :</label><br>
-            <input type="text" id="address" placeholder="Street Address" required>
+            <input type="text" id="address" name="address" placeholder="Street Address" required>
         </div>
         <div>
             <label for="Postal Code" class="form-label">Postal Code :</label><br>
-            <input type="text" id="postal_code" placeholder="e.g. 43200" required>
+            <input type="number" id="postal_code" name="postal_code" placeholder="e.g. 43200" required>
         </div>
         <div>
             <label for="country" class="form-label">Country :</label><br>
-            <input type="text" id="country" placeholder="e.g. Malaysia" required>
+            <input type="text" id="country" name="country" placeholder="e.g. Malaysia" required>
         </div>
     </div>
 
@@ -54,9 +54,7 @@
     <button type="submit" class="submit-btn">Save Property</button>
 </form>   
 
-
-
- {{-- <x-footer/>  this footer got problem(it shown on the middle of screen), not fixed yet--}}
+<x-footer/>
 
 <style>
     .title{

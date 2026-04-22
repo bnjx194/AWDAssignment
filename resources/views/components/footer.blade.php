@@ -30,9 +30,6 @@
     color: #fff;
     padding: 2rem 0 0;
     width: 100vw;
-    position: absolute;
-    bottom: 0;
-
 }
 
 .footer-container {

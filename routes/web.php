@@ -35,3 +35,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/sell', function () {  // yj part
     return view('sellPage');
 });
+Route::post('/sell', [App\Http\Controllers\PropertyController::class, 'store']);
