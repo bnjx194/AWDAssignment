@@ -25,6 +25,10 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 
+Route::get('/buy', function () {  
+    return view('buyPage');
+});
+
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show'); //search
 
