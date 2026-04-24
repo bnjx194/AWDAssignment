@@ -34,7 +34,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/sell', function () {  // yj part
-    return view('sellPage');
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/sell', function () {
+        return view('sellPage');
+    });
+    Route::post('/property', [PropertyController::class, 'store'])->name('property.store');
 });
-Route::post('/sell', [App\Http\Controllers\PropertyController::class, 'store']);
