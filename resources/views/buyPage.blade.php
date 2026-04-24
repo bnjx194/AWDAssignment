@@ -259,5 +259,9 @@
 .pagination li:last-child a {
     font-weight: 600;
 }
+
+.w-5{
+    display: none;
+}
 </style>
 

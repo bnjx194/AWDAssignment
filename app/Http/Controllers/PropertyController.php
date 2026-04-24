@@ -72,6 +72,6 @@ class PropertyController extends BaseController
             'status'      => 'active',
         ]);
 
-        return redirect('/home');
+        return redirect('/buy');
     }
 }

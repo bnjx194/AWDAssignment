@@ -39,5 +39,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sell', function () {
         return view('sellPage');
     });
-    Route::post('/property', [PropertyController::class, 'store'])->name('property.store');
+    Route::post('/sell', [PropertyController::class, 'store'])->name('property.store');
 });
