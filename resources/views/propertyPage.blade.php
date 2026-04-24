@@ -1,13 +1,11 @@
 <x-header/>
 
-@foreach($properties as $property)
-    <div class="property-card">
-        <h3>{{ $property->description }}</h3>
-        <p>Price: ${{ number_format($property->price, 2) }}</p>
-        
-        <p>Location: {{ $property->address->address }}, {{ $property->address->country }}</p>
-        
-       
+@foreach ($properties as $property)
+    <div style="border:1px solid #ccc; padding:10px; margin:10px; width:200px;">
+        <h3>{{ $property->name }}</h3>
+
+        <img src="{{ asset('storage/' . $property->image) }}" >
+
     </div>
 @endforeach
 

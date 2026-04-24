@@ -16,13 +16,21 @@ class ListingSeeder extends Seeder
      */
     public function run()
     {
-        $property = Property::first();
+        $properties = Property::all();
 
-        Listing::create([
-            'property_id' => $property->id,
-            'seller_id' => $property->owner_id,
-            'price' => 750000.00,
-            'status' => 'active',
-        ]);
+        $prices = [
+            750000, 450000, 520000, 680000, 280000,
+            550000, 850000, 380000, 1200000, 320000,
+            1800000, 480000
+        ];
+
+        foreach ($properties as $index => $property) {
+            Listing::create([
+                'property_id' => $property->id,
+                'seller_id' => $property->owner_id,
+                'price' => $prices[$index],
+                'status' => 'active',
+            ]);
+        }
     }
 }

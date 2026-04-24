@@ -26,12 +26,6 @@ class PropertyController extends BaseController
         return view('propertyPage', compact('properties'));
     }
 
-    public function show($id)
-    {
-        $property = Property::with('address')->findOrFail($id);
-        return view('properties.show', compact('property'));
-    }
-
      // Save to all 3 tables
     public function store(Request $request)
     {
