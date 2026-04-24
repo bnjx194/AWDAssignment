@@ -1,4 +1,4 @@
-<x-header>
+<x-header/>
     <html>  
         <head>
             <title>Buy Page</title>
@@ -7,4 +7,4 @@
             <h1>Welcome to the Buy Page!</h1>
             <p>Here you can purchase our products.</p>
         </body>
-<x-footer>
+<x-footer/>
