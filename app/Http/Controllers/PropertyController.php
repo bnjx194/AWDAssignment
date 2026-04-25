@@ -25,7 +25,7 @@ class PropertyController extends BaseController
             'bedrooms' => 'required|integer|min:1',
             'bathrooms' => 'required|numeric|min:1',
             'sqft' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'address' => 'required|string',
             'postal_code' => 'required|string',
             'country' => 'required|string',
