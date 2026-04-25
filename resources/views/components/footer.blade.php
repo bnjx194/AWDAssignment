@@ -7,8 +7,19 @@
         <div class="footer-section">
             <h5>Quick Links</h5>
             <nav class="footer-nav">
-                <a href="/buy">Buy</a>
-                <a href="/sell">Sell</a>
+                @auth
+                    @if(Auth::user()->role === 'seller')
+                        <a href="{{ route('sell') }}">Sell</a>
+                    @elseif(Auth::user()->role === 'buyer')
+                        <a href="{{ route('buy') }}">Buy</a>
+                    @else
+                        <a href="{{ route('buy') }}">Buy</a>
+                        <a href="{{ route('sell') }}">Sell</a>
+                    @endif
+                @else
+                    <a href="{{ route('buy') }}">Buy</a>
+                    <a href="{{ route('sell') }}">Sell</a>
+                @endauth
                 <a href="{{ route('about') }}">About</a>
                 <a href="{{ route('contact') }}">Contact</a>
             </nav>

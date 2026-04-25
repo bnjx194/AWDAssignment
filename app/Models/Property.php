@@ -20,4 +20,9 @@ class Property extends Model
     {
         return $this->hasOne(PropertyAddress::class);
     }
+
+    public function listing()
+    {
+        return $this->hasOne(Listing::class);
+    }
 }

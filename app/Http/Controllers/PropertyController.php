@@ -15,13 +15,6 @@ class PropertyController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
-    {
-        $properties = Property::with('address')->latest()->get();
-
-        return view('propertyPage', compact('properties'));
-    }
-
     // Save to all 3 tables
     public function store(Request $request)
     {

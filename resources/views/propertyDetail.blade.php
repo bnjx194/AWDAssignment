@@ -54,6 +54,25 @@
                     @endauth
                 @endif
             </div>
+
+            @if($recentProperties && $recentProperties->count() > 0)
+                <div class="recently-viewed">
+                    <h3>Recently Viewed Properties</h3>
+                    <div class="recently-viewed-list">
+                        @foreach($recentProperties as $recentProperty)
+                            <a href="{{ route('property.show', $recentProperty->id) }}" class="recent-item">
+                                <strong>{{ Str::limit($recentProperty->description, 50) }}</strong>
+                                <span>
+                                    {{ $recentProperty->address->address ?? 'Address unavailable' }}
+                                    @if($recentProperty->address && $recentProperty->address->postal_code)
+                                        , {{ $recentProperty->address->postal_code }}
+                                    @endif
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </section>
 </main>

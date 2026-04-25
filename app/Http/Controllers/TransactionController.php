@@ -51,12 +51,9 @@ class TransactionController extends Controller
             ]);
         });
 
-        session(['last_transaction_id' => $transaction->id]);
-
         // Redirect to the new receipt route, passing the transaction ID
         return redirect()->route('payment.receipt', $transaction->id)
-                         ->with('success', 'Payment successful. Your property purchase is completed.')
-                         ->cookie('last_transaction_id', (string) $transaction->id, 60 * 24 * 30);
+                         ->with('success', 'Payment successful. Your property purchase is completed.');
     }
 
     // Add this new method to handle the receipt view
