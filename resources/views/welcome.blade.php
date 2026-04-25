@@ -25,10 +25,6 @@
 			<h3>Buy</h3>
 			<p>View current market listings and find your ideal property.</p>
 		</a>
-		<a href="{{ route('property.index') }}" class="card-link">
-			<h3>Properties</h3>
-			<p>Browse all registered properties and view full details.</p>
-		</a>
 		@auth
 			<a href="/sell" class="card-link">
 				<h3>Sell</h3>

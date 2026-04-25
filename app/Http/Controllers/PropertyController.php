@@ -17,14 +17,6 @@ class PropertyController extends BaseController
 
 
 
-    public function index()
-    {
-        // Fetch all properties along with their addresses (Eager Loading)
-        $properties = Property::with('address')->get();
-
-        // Return the view and pass the data
-        return view('propertyPage', compact('properties'));
-    }
 
     // Save to all 3 tables
     public function store(Request $request)
