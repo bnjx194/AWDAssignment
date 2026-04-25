@@ -27,7 +27,7 @@ class TransactionController extends Controller
         $request->validate([
             'card_name' => 'required|string|max:255',
             'card_number' => 'required|digits_between:12,19',
-            'expiry' => ['required', 'regex:/^(0[1-9]|1[0-2])\/[0-9]{2}$/'],
+            'expiry' => ['required|max:5', 'regex:/^(0[1-9]|1[0-2])\/[0-9]{2}$/'],
             'cvv' => 'required|digits_between:3,4',
         ]);
 
