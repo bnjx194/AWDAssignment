@@ -7,6 +7,9 @@
             <a href="{{ route('about') }}" class="nav-link">About</a>
             <a href="{{ route('contact') }}" class="nav-link">Contact</a>
             @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Admin</a>
+                @endif
                 <a href="{{ route('profile') }}" class="nav-link">Profile</a>
                 <a href="{{ route('logout') }}" class="nav-link">Logout</a>
             @else

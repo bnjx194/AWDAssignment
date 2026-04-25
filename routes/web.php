@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\TransactionController;
@@ -64,4 +65,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::get('/payment/receipt/{id}', [TransactionController::class, 'showReceipt'])->name('payment.receipt');
+});
+
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::put('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('admin.users.role');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::put('/listings/{listing}/status', [AdminController::class, 'updateListingStatus'])->name('admin.listings.status');
+    Route::delete('/listings/{listing}', [AdminController::class, 'deleteListing'])->name('admin.listings.delete');
 });

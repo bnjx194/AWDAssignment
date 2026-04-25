@@ -7,13 +7,16 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class TransactionController extends Controller
 {
     public function showPayment(Listing $listing)
     {
-        if ($listing->status !== 'active') {
-            return redirect()->route('buy')->with('error', 'This listing is no longer available.');
+        $authorization = Gate::inspect('purchase-listing', $listing);
+
+        if ($authorization->denied()) {
+            return redirect()->route('buy')->with('error', $authorization->message());
         }
 
         return view('paymentPage', compact('listing'));
@@ -28,12 +31,10 @@ class TransactionController extends Controller
             'cvv' => 'required|digits_between:3,4',
         ]);
 
-        if ($listing->status !== 'active') {
-            return redirect()->route('buy')->with('error', 'This listing has already been purchased.');
-        }
+        $authorization = Gate::inspect('purchase-listing', $listing);
 
-        if (Auth::id() === $listing->seller_id) {
-            return back()->withErrors(['card_name' => 'You cannot purchase your own listing.'])->withInput();
+        if ($authorization->denied()) {
+            return redirect()->route('buy')->with('error', $authorization->message());
         }
 
         // Capture the transaction object returned from the DB closure
@@ -50,9 +51,12 @@ class TransactionController extends Controller
             ]);
         });
 
+        session(['last_transaction_id' => $transaction->id]);
+
         // Redirect to the new receipt route, passing the transaction ID
         return redirect()->route('payment.receipt', $transaction->id)
-                         ->with('success', 'Payment successful. Your property purchase is completed.');
+                         ->with('success', 'Payment successful. Your property purchase is completed.')
+                         ->cookie('last_transaction_id', (string) $transaction->id, 60 * 24 * 30);
     }
 
     // Add this new method to handle the receipt view
@@ -61,10 +65,7 @@ class TransactionController extends Controller
         // Eager load the relationships used in your receipt blade file
         $transaction = Transaction::with(['buyer', 'seller', 'listing.property.address'])->findOrFail($id);
 
-        // Security check: Only allow the buyer (or seller) to view this specific receipt
-        if (Auth::id() !== $transaction->buyer_id && Auth::id() !== $transaction->seller_id) {
-            abort(403, 'Unauthorized access to this receipt.');
-        }
+        $this->authorize('view', $transaction);
 
         // Make sure the view name matches the name of your receipt blade file (e.g., 'receipt')
         return view('paymentReceiptPage', compact('transaction')); 

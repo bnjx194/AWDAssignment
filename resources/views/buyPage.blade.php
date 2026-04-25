@@ -28,7 +28,7 @@
                     name="search" 
                     class="property-search-input" 
                     placeholder="Search by property name, address, or description..." 
-                    value=""
+                    value="{{ $searchValue ?? '' }}"
                 >
             </div>
             <button type="submit" class="property-search-btn">Search</button>

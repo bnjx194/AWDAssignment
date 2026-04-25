@@ -43,7 +43,12 @@
                 <a href="{{ route('buy') }}" class="detail-btn detail-btn-primary">Back to Listings</a>
                 @if($listing)
                     @auth
-                        <a href="{{ route('payment.show', $listing->id) }}" class="detail-btn detail-btn-secondary">Buy</a>
+                        @php($purchaseAuth = \Illuminate\Support\Facades\Gate::inspect('purchase-listing', $listing))
+                        @if($purchaseAuth->allowed())
+                            <a href="{{ route('payment.show', $listing->id) }}" class="detail-btn detail-btn-secondary">Buy</a>
+                        @else
+                            <span class="detail-btn detail-btn-disabled">{{ $purchaseAuth->message() ?? 'This listing cannot be purchased.' }}</span>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="detail-btn detail-btn-secondary">Buy</a>
                     @endauth
@@ -171,6 +176,50 @@
     background: #fff;
     color: #0b2240;
     border: 1px solid #c7d6e6;
+}
+
+.detail-btn-disabled {
+    background: #f4f6f8;
+    color: #617283;
+    border: 1px solid #d3dde7;
+    cursor: not-allowed;
+}
+
+.recently-viewed {
+    margin-top: 1.1rem;
+    border-top: 1px solid #e4edf6;
+    padding-top: 0.9rem;
+}
+
+.recently-viewed h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #0e223a;
+}
+
+.recently-viewed-list {
+    margin-top: 0.65rem;
+    display: grid;
+    gap: 0.55rem;
+}
+
+.recent-item {
+    display: block;
+    text-decoration: none;
+    border: 1px solid #dce7f4;
+    border-radius: 10px;
+    padding: 0.6rem;
+    background: #fbfdff;
+}
+
+.recent-item strong {
+    display: block;
+    color: #122a43;
+}
+
+.recent-item span {
+    color: #566879;
+    font-size: 0.88rem;
 }
 
 @media (max-width: 860px) {

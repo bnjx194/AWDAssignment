@@ -22,12 +22,11 @@ class PropertyController extends BaseController
         return view('propertyPage', compact('properties'));
     }
 
-
-
-
     // Save to all 3 tables
     public function store(Request $request)
     {
+        $this->authorize('create', Property::class);
+
         $request->validate([
             'description' => 'required|string',
             'bedrooms' => 'required|integer|min:1',
@@ -73,10 +72,38 @@ class PropertyController extends BaseController
 
         return redirect('/buy');
     }
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $property = Property::with('address')->findOrFail($id);
         $listing = Listing::where('property_id', $id)->first();
-        return view('propertyDetail', compact('property', 'listing'));
+
+        $recentlyViewed = session('recently_viewed_properties');
+        if (!is_array($recentlyViewed)) {
+            $recentlyViewed = json_decode($request->cookie('recently_viewed_properties', '[]'), true);
+        }
+        if (!is_array($recentlyViewed)) {
+            $recentlyViewed = [];
+        }
+
+        $recentlyViewed = array_values(array_filter($recentlyViewed, function ($propertyId) use ($id) {
+            return (int) $propertyId !== (int) $id;
+        }));
+        array_unshift($recentlyViewed, (int) $id);
+        $recentlyViewed = array_slice($recentlyViewed, 0, 5);
+
+        session(['recently_viewed_properties' => $recentlyViewed]);
+
+        $recentProperties = Property::with('address')
+            ->whereIn('id', $recentlyViewed)
+            ->where('id', '!=', $property->id)
+            ->get()
+            ->sortBy(function ($item) use ($recentlyViewed) {
+                return array_search($item->id, $recentlyViewed);
+            })
+            ->values();
+
+        return response()
+            ->view('propertyDetail', compact('property', 'listing', 'recentlyViewed', 'recentProperties'))
+            ->cookie('recently_viewed_properties', json_encode($recentlyViewed), 60 * 24 * 30);
     }
 }
