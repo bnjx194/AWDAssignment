@@ -4,6 +4,8 @@
         <nav class="header-nav">
             <a href="/buy" class="nav-link">Buy</a>
             <a href="/sell" class="nav-link">Sell</a>
+            <a href="{{ route('about') }}" class="nav-link">About</a>
+            <a href="{{ route('contact') }}" class="nav-link">Contact</a>
             @auth
                 <a href="{{ route('profile') }}" class="nav-link">Profile</a>
                 <a href="{{ route('logout') }}" class="nav-link">Logout</a>

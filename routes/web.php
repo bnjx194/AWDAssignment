@@ -20,6 +20,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('aboutPage');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contactPage');
+})->name('contact');
+
+Route::post('/contact', function (Request $request) {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'nullable|string|max:30',
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string|max:2000',
+    ]);
+
+    return back()->with('success', 'Thank you for contacting REM. We will reply soon.');
+})->name('contact.submit');
+
 Route::get('/logout', function () {
     auth()->logout();
     session()->invalidate();
@@ -27,7 +47,9 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::get('/buy', [App\Http\Controllers\ListingController::class, 'buy'])->name('buy');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/buy', [App\Http\Controllers\ListingController::class, 'buy'])->name('buy');
+});
 
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show'); //search
@@ -59,3 +81,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::post('/sell', [PropertyController::class, 'store']);
+});
