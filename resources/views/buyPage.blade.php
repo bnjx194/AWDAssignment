@@ -176,7 +176,7 @@
 
     .property-search-btn {
         padding: 0.75rem 1.5rem;
-        background: #2563eb;
+        background: #537895;
         color: #fff;
         border: none;
         border-radius: 8px;
