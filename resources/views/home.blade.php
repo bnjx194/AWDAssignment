@@ -27,9 +27,9 @@
                 <h3>Sell Property</h3>
                 <p>Create a new listing and reach potential buyers faster.</p>
             </a>
-            <a href="{{ route('property.index') }}" class="card">
-                <h3>All Properties</h3>
-                <p>View all registered properties in one clean directory.</p>
+            <a href="{{ route('buy') }}" class="card">
+                <h3>Buy Now</h3>
+                <p>Proceed to available listings and start your payment checkout.</p>
             </a>
             <a href="{{ route('contact') }}" class="card">
                 <h3>Contact Support</h3>

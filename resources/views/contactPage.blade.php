@@ -156,12 +156,8 @@
 			<h2>Ready to Get Started?</h2>
 			<p>Join our community of buyers and sellers today.</p>
 			<div class="cta-actions">
-				<a href="{{ route('buy') }}" class="btn btn-primary">Browse Properties</a>
-				@auth
-					<a href="/sell" class="btn btn-secondary">List Your Property</a>
-				@else
-					<a href="{{ route('register') }}" class="btn btn-secondary">Create Account</a>
-				@endauth
+				<a href="/buy" class="btn btn-primary">Browse Properties</a>
+				<a href="/sell" class="btn btn-secondary">List Your Property</a>
 			</div>
 		</div>
 	</section>

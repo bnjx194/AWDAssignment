@@ -41,7 +41,13 @@
 
             <div class="detail-actions">
                 <a href="{{ route('buy') }}" class="detail-btn detail-btn-primary">Back to Listings</a>
-                <a href="{{ route('property.index') }}" class="detail-btn detail-btn-secondary">All Properties</a>
+                @if($listing)
+                    @auth
+                        <a href="{{ route('payment.show', $listing->id) }}" class="detail-btn detail-btn-secondary">Buy</a>
+                    @else
+                        <a href="{{ route('login') }}" class="detail-btn detail-btn-secondary">Buy</a>
+                    @endauth
+                @endif
             </div>
         </div>
     </section>
