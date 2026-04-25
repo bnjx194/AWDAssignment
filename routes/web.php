@@ -49,6 +49,7 @@ Route::get('/logout', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/buy', [App\Http\Controllers\ListingController::class, 'buy'])->name('buy');
+    Route::get('/buy/{search}', [App\Http\Controllers\ListingController::class, 'search'])->name('search');
 });
 
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');

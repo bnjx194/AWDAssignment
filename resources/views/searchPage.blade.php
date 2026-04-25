@@ -1,11 +1,13 @@
 <x-header/>
 
 <main class="property-page-wrap">
-    
     <section class="property-page-head">
-        <p class="property-page-kicker">Property Directory</p>
-        <h1>All Registered Properties</h1>
-        <p class="property-page-subtext">Browse properties uploaded by users and open each profile for full details.</p>
+        <p class="property-page-kicker">Search Results</p>
+        <h1>Properties matching "{{ $search }}"</h1>
+        <p class="property-page-subtext">Found {{ $listings->total() }} property{{ $listings->total() != 1 ? 'ies' : '' }} matching your search.</p>
+        <div class="property-page-actions">
+            <a href="{{ route('buy') }}" class="property-page-btn property-page-btn-primary">View All Listings</a>
+        </div>
     </section>
 
     <section class="property-search-wrap">
@@ -19,8 +21,8 @@
                     type="text" 
                     name="search" 
                     class="property-search-input" 
-                    placeholder="Search by property name, address, or description..." 
-                    value=""
+                    placeholder="Search by property name" 
+                    value="{{ $search }}"
                 >
             </div>
             <button type="submit" class="property-search-btn">Search</button>
@@ -50,13 +52,15 @@
             </a>
         @empty
             <div class="property-empty-state">
-                No properties found yet.
+                No properties found matching "{{ $search }}".
+                <br><br>
+                <a href="{{ route('buy') }}" class="property-page-btn property-page-btn-primary">View All Listings</a>
             </div>
         @endforelse
     </section>
 
     <div class="property-pagination-wrap">
-        {{ $listings->onEachSide(1)->links('pagination::bootstrap-4') }}
+        {{ $listings->links() }}
     </div>
 </main>
 
@@ -96,6 +100,13 @@
     margin: 0.8rem 0 0;
     color: rgba(255, 255, 255, 0.9);
     max-width: 620px;
+}
+
+.property-page-actions {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
 }
 
 .property-page-btn {
@@ -326,4 +337,3 @@
     display: none;
 }
 </style>
-
