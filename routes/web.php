@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::post('/sell', [PropertyController::class, 'store'])->name('property.store');
 });
+
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');

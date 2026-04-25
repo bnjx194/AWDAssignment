@@ -5,6 +5,7 @@
             <a href="/buy" class="nav-link">Buy</a>
             <a href="/sell" class="nav-link">Sell</a>
             @auth
+                <a href="{{ route('profile') }}" class="nav-link">Profile</a>
                 <a href="{{ route('logout') }}" class="nav-link">Logout</a>
             @else
                 <a href="{{ route('login') }}" class="nav-link">Login</a>
