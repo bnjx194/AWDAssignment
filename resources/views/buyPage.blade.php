@@ -28,11 +28,6 @@
                     </div>
                 </div>
             </a>
-        @empty
-            <div class="property-empty-state">
-                No properties found yet.
-            </div>
-        @endforelse
     </section>
 
     <div class="property-pagination-wrap">
