@@ -1,6 +1,7 @@
 <x-header />
 
 <main class="property-page-wrap">
+    
     <section class="property-page-head">
         <p class="property-page-kicker">Property Directory</p>
         <h1>All Registered Properties</h1>
@@ -14,6 +15,25 @@
     @if (session('error'))
         <div class="property-alert property-alert-error">{{ session('error') }}</div>
     @endif
+    
+    <section class="property-search-wrap">
+        <form action="{{ route('buy') }}" method="GET" class="property-search-form">
+            <div class="property-search-input-wrap">
+                <svg class="property-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="property-search-input" 
+                    placeholder="Search by property name, address, or description..." 
+                    value=""
+                >
+            </div>
+            <button type="submit" class="property-search-btn">Search</button>
+        </form>
+    </section>
 
     <section class="property-grid">
         @forelse ($listings as $listing)
@@ -109,6 +129,65 @@
         background: rgba(255, 255, 255, 0.08);
         color: #fff;
         border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .property-search-wrap {
+        max-width: 1100px;
+        margin: 0 auto 1.25rem;
+    }
+
+    .property-search-form {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0.5rem;
+        box-shadow: 0 4px 20px rgba(15, 36, 58, 0.1);
+    }
+
+    .property-search-input-wrap {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 0.75rem;
+    }
+
+    .property-search-icon {
+        width: 20px;
+        height: 20px;
+        color: #6e7b88;
+        flex-shrink: 0;
+    }
+
+    .property-search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        color: #1d2a38;
+        background: transparent;
+    }
+
+    .property-search-input::placeholder {
+        color: #9aa5b5;
+    }
+
+    .property-search-btn {
+        padding: 0.75rem 1.5rem;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .property-search-btn:hover {
+        background: #1d4ed8;
     }
 
     .property-grid {

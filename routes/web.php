@@ -38,7 +38,10 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::get('/buy', [ListingController::class, 'buy'])->name('buy');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/buy', [App\Http\Controllers\ListingController::class, 'buy'])->name('buy');
+    Route::get('/buy/{search}', [App\Http\Controllers\ListingController::class, 'search'])->name('search');
+});
 
 Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
 Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show');

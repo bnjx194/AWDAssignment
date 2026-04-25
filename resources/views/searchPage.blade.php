@@ -1,0 +1,339 @@
+<x-header/>
+
+<main class="property-page-wrap">
+    <section class="property-page-head">
+        <p class="property-page-kicker">Search Results</p>
+        <h1>Properties matching "{{ $search }}"</h1>
+        <p class="property-page-subtext">Found {{ $listings->total() }} property{{ $listings->total() != 1 ? 'ies' : '' }} matching your search.</p>
+        <div class="property-page-actions">
+            <a href="{{ route('buy') }}" class="property-page-btn property-page-btn-primary">View All Listings</a>
+        </div>
+    </section>
+
+    <section class="property-search-wrap">
+        <form action="{{ route('buy') }}" method="GET" class="property-search-form">
+            <div class="property-search-input-wrap">
+                <svg class="property-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="property-search-input" 
+                    placeholder="Search by property name" 
+                    value="{{ $search }}"
+                >
+            </div>
+            <button type="submit" class="property-search-btn">Search</button>
+        </form>
+    </section>
+
+    <section class="property-grid">
+        @forelse ($listings as $listing)
+            <a href="{{ route('property.show', $listing->property->id) }}" class="property-card">
+                <div class="property-card-image-wrap">
+                    @if($listing->property->image)
+                        <img src="{{ asset('storage/' . $listing->property->image) }}" alt="Property image">
+                    @else
+                        <div class="property-card-image-placeholder">No Image</div>
+                    @endif
+                </div>
+
+                <div class="property-card-content">
+                    <h3>{{ $listing->property->name ?? Str::limit($listing->property->description, 52) }}</h3>
+                    <p>{{ $listing->property->address->address ?? 'Address unavailable' }}</p>
+                    <div class="property-card-meta">
+                        <span>{{ $listing->property->bedrooms ?? 0 }} Beds</span>
+                        <span>{{ $listing->property->bathrooms ?? 0 }} Baths</span>
+                        <span>{{ $listing->property->sqft ?? 0 }} sqft</span>
+                    </div>
+                </div>
+            </a>
+        @empty
+            <div class="property-empty-state">
+                No properties found matching "{{ $search }}".
+                <br><br>
+                <a href="{{ route('buy') }}" class="property-page-btn property-page-btn-primary">View All Listings</a>
+            </div>
+        @endforelse
+    </section>
+
+    <div class="property-pagination-wrap">
+        {{ $listings->links() }}
+    </div>
+</main>
+
+<x-footer/>
+
+<style>
+.property-page-wrap {
+    min-height: calc(100vh - 200px);
+    background: linear-gradient(180deg, #f2f8ff 0%, #ffffff 60%);
+    padding: 2rem 1.25rem 3rem;
+}
+
+.property-page-head {
+    max-width: 1100px;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(120deg, #09203f 0%, #537895 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 2rem 1.4rem;
+    box-shadow: 0 14px 30px rgba(9, 32, 63, 0.24);
+}
+
+.property-page-kicker {
+    margin: 0 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    opacity: 0.9;
+}
+
+.property-page-head h1 {
+    margin: 0;
+    font-size: clamp(1.45rem, 3.2vw, 2.2rem);
+}
+
+.property-page-subtext {
+    margin: 0.8rem 0 0;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 620px;
+}
+
+.property-page-actions {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.property-page-btn {
+    text-decoration: none;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.property-page-btn-primary {
+    background: #fff;
+    color: #0b2240;
+}
+
+.property-page-btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.property-search-wrap {
+    max-width: 1100px;
+    margin: 0 auto 1.25rem;
+}
+
+.property-search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #fff;
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 20px rgba(15, 36, 58, 0.1);
+}
+
+.property-search-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 0.75rem;
+}
+
+.property-search-icon {
+    width: 20px;
+    height: 20px;
+    color: #6e7b88;
+    flex-shrink: 0;
+}
+
+.property-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #1d2a38;
+    background: transparent;
+}
+
+.property-search-input::placeholder {
+    color: #9aa5b5;
+}
+
+.property-search-btn {
+    padding: 0.75rem 1.5rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.property-search-btn:hover {
+    background: #1d4ed8;
+}
+
+.property-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.property-card {
+    background: #fff;
+    border: 1px solid #dce7f4;
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #1d2a38;
+    box-shadow: 0 10px 22px rgba(15, 36, 58, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-2px);
+    border-color: #b8cde0;
+    box-shadow: 0 16px 28px rgba(15, 36, 58, 0.14);
+    color: #1d2a38;
+}
+
+.property-card-image-wrap {
+    height: 180px;
+    background: #e8edf4;
+}
+
+.property-card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.property-card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #6e7b88;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.property-card-content {
+    padding: 1rem;
+}
+
+.property-card-content h3 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.property-card-content p {
+    margin: 0.45rem 0 0;
+    color: #566574;
+    font-size: 0.92rem;
+}
+
+.property-card-meta {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.property-card-meta span {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: #eef4fa;
+    color: #3d4c5b;
+}
+
+.property-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: #fff;
+    border: 1px dashed #c7d6e6;
+    border-radius: 12px;
+    color: #637484;
+    padding: 1.25rem;
+}
+
+.property-pagination-wrap {
+    max-width: 1100px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: center;
+}
+
+.property-pagination-wrap .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.property-pagination-wrap .pagination li {
+    margin: 0;
+}
+
+.property-pagination-wrap .pagination li a,
+.property-pagination-wrap .pagination li span {
+    display: block;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    background: #f3f3f3;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 44px;
+    text-align: center;
+}
+
+.property-pagination-wrap .pagination li a:hover {
+    background: #2563eb;
+    color: #fff;
+}
+
+.property-pagination-wrap .pagination li.active span {
+    background: #2563eb;
+    color: #fff;
+}
+
+.property-pagination-wrap .pagination li.disabled span {
+    background: #e5e5e5;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.property-pagination-wrap .pagination li:first-child a,
+.property-pagination-wrap .pagination li:last-child a {
+    font-weight: 600;
+}
+
+.property-pagination-wrap .w-5 {
+    display: none;
+}
+</style>
