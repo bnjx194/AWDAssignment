@@ -7,6 +7,7 @@
             <a href="{{ route('about') }}" class="nav-link">About</a>
             <a href="{{ route('contact') }}" class="nav-link">Contact</a>
             @auth
+                <a href="{{ route('profile') }}" class="nav-link">Profile</a>
                 <a href="{{ route('logout') }}" class="nav-link">Logout</a>
             @else
                 <a href="{{ route('login') }}" class="nav-link">Login</a>
