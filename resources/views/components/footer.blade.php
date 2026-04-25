@@ -9,8 +9,8 @@
             <nav class="footer-nav">
                 <a href="/buy">Buy</a>
                 <a href="/sell">Sell</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
+                <a href="{{ route('about') }}">About</a>
+                <a href="{{ route('contact') }}">Contact</a>
             </nav>
         </div>
         <div class="footer-section">
