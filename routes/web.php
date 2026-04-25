@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ProfileController;
 
@@ -41,6 +42,18 @@ Route::group(['middleware' => 'auth'], function () {
         return view('sellPage');
     });
     Route::post('/sell', [PropertyController::class, 'store'])->name('property.store');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/sell', function () {
+        return view('sellPage');
+    });
+    Route::post('/sell', [PropertyController::class, 'store']);
 });
 
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
