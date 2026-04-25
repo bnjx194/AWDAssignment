@@ -41,11 +41,6 @@
                 </div>
 
                 <div class="field-block">
-                    <label for="phone">Phone Number</label>
-                    <input type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="e.g. +60 12-345 6789">
-                </div>
-
-                <div class="field-block">
                     <label>Role</label>
                     <div class="role-badge role-{{ $user->role }}">{{ ucfirst($user->role) }}</div>
                 </div>
