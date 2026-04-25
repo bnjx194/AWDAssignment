@@ -36,7 +36,7 @@
     </section>
 
     <div class="property-pagination-wrap">
-        {{ $listings->onEachSide(1)->links() }}
+        {{ $listings->onEachSide(1)->links('pagination::bootstrap-4') }}
     </div>
 </main>
 
