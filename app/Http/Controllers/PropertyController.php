@@ -63,7 +63,7 @@ class PropertyController extends BaseController
             'status' => 'active',
         ]);
 
-        return redirect('/buy');
+        return redirect('/home');
     }
     public function show(Request $request, $id)
     {
