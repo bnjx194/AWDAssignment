@@ -2,12 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+// Controllers
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProfileController;
 
+//Public Routes
 Route::get('/', function () {
     return view('welcome');
 });
@@ -32,6 +37,9 @@ Route::post('/contact', function (Request $request) {
     return back()->with('success', 'Thank you for contacting REM. We will reply soon.');
 })->name('contact.submit');
 
+//Authentication Routes
+Auth::routes();
+
 Route::get('/logout', function () {
     auth()->logout();
     session()->invalidate();
@@ -39,38 +47,56 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/buy', [App\Http\Controllers\ListingController::class, 'buy'])->name('buy');
-    Route::get('/buy/{search}', [App\Http\Controllers\ListingController::class, 'search'])->name('search');
-});
+//Authenticated User Routes
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
-Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show');
+    // Dashboard
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Auth::routes();
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-    Route::get('/sell', function () {
-        return view('sellPage');
-    });
-
-    Route::post('/sell', [PropertyController::class, 'store'])->name('property.store');
-
-    Route::get('/buy/{listing}/payment', [TransactionController::class, 'showPayment'])->name('payment.show');
-    Route::post('/buy/{listing}/payment', [TransactionController::class, 'processPayment'])->name('payment.process');
-
+    // Profile Management
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    Route::get('/payment/receipt/{id}', [TransactionController::class, 'showReceipt'])->name('payment.receipt');
+
+    // Properties
+    Route::get('/property', function () {
+        $user = auth()->user();
+
+        if ($user->role === 'seller') {
+            return redirect()->route('sell');
+        }
+
+        return redirect()->route('buy');
+    })->name('property.index');
+    
+    Route::get('/property/{id}', [PropertyController::class, 'show'])->name('property.show');
+    Route::get('/sell', function () {
+        return view('sellPage');
+    })->middleware('role:seller,admin')->name('sell');
+    Route::post('/sell', [PropertyController::class, 'store'])->middleware('role:seller,admin')->name('property.store');
+
+    // Listings & Search
+    Route::get('/buy', [ListingController::class, 'buy'])->middleware('role:buyer,admin')->name('buy');
+    Route::get('/buy/{search}', [ListingController::class, 'search'])->middleware('role:buyer,admin')->name('search');
+
+    // Transactions & Payment
+    Route::get('/buy/{listing}/payment', [TransactionController::class, 'showPayment'])->middleware('role:buyer,admin')->name('payment.show');
+    Route::post('/buy/{listing}/payment', [TransactionController::class, 'processPayment'])->middleware('role:buyer,admin')->name('payment.process');
+    Route::get('/payment/receipt/{id}', [TransactionController::class, 'showReceipt'])->middleware('role:buyer,admin')->name('payment.receipt');
+
 });
 
-Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // User Management
     Route::put('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('admin.users.role');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+    // Listing Management
     Route::put('/listings/{listing}/status', [AdminController::class, 'updateListingStatus'])->name('admin.listings.status');
     Route::delete('/listings/{listing}', [AdminController::class, 'deleteListing'])->name('admin.listings.delete');
+
 });

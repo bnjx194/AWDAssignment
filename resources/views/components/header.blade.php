@@ -2,8 +2,19 @@
     <div class="header-container">
         <a href="/" class="logo">REM</a>
         <nav class="header-nav">
-            <a href="/buy" class="nav-link">Buy</a>
-            <a href="/sell" class="nav-link">Sell</a>
+            @auth
+                @if(Auth::user()->role === 'seller')
+                    <a href="{{ route('sell') }}" class="nav-link">Sell</a>
+                @elseif(Auth::user()->role === 'buyer')
+                    <a href="{{ route('buy') }}" class="nav-link">Buy</a>
+                @else
+                    <a href="{{ route('buy') }}" class="nav-link">Buy</a>
+                    <a href="{{ route('sell') }}" class="nav-link">Sell</a>
+                @endif
+            @else
+                <a href="{{ route('buy') }}" class="nav-link">Buy</a>
+                <a href="{{ route('sell') }}" class="nav-link">Sell</a>
+            @endauth
             <a href="{{ route('about') }}" class="nav-link">About</a>
             <a href="{{ route('contact') }}" class="nav-link">Contact</a>
             @auth

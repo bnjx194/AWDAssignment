@@ -15,13 +15,6 @@ class PropertyController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
-    {
-        $properties = Property::with('address')->latest()->get();
-
-        return view('propertyPage', compact('properties'));
-    }
-
     // Save to all 3 tables
     public function store(Request $request)
     {
@@ -70,7 +63,7 @@ class PropertyController extends BaseController
             'status' => 'active',
         ]);
 
-        return redirect('/buy');
+        return redirect('/home');
     }
     public function show(Request $request, $id)
     {

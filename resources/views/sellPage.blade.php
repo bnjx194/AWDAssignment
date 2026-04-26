@@ -6,6 +6,14 @@
         <p>Fill in your property details below and publish your listing to reach buyers quickly.</p>
     </section>
 
+    @if (session('error'))
+        <div class="sell-alert sell-alert-error">{{ session('error') }}</div>
+    @endif
+
+    @if (session('success'))
+        <div class="sell-alert sell-alert-success">{{ session('success') }}</div>
+    @endif
+
     <form method="POST" action="/sell" enctype="multipart/form-data" onsubmit="return confirm('Do you want to list this property now?')" class="sell-form">
         @csrf
 
@@ -126,6 +134,26 @@
         border-radius: 16px;
         box-shadow: 0 10px 24px rgba(15, 36, 58, 0.1);
         padding: 1rem;
+    }
+
+    .sell-alert {
+        max-width: 980px;
+        margin: 0 auto 0.9rem;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 0.93rem;
+    }
+
+    .sell-alert-error {
+        border: 1px solid #f3c2c5;
+        background: #fff0f1;
+        color: #7e1f27;
+    }
+
+    .sell-alert-success {
+        border: 1px solid #bcead0;
+        background: #edfdf3;
+        color: #1f7042;
     }
 
     .form-errors {

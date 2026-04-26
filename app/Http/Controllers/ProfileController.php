@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,26 @@ class ProfileController extends Controller
 
     public function show()
     {
-        return view('profile', ['user' => Auth::user()]);
+        $user = Auth::user();
+
+        $listedProperties = collect();
+        $purchasedTransactions = collect();
+
+        if ($user->role === 'seller') {
+            $listedProperties = $user->properties()
+                ->with(['address', 'listing'])
+                ->latest()
+                ->get();
+        }
+
+        if ($user->role === 'buyer') {
+            $purchasedTransactions = $user->purchases()
+                ->with(['listing.property.address'])
+                ->latest()
+                ->get();
+        }
+
+        return view('profile', compact('user', 'listedProperties', 'purchasedTransactions'));
     }
 
     public function update(Request $request)
