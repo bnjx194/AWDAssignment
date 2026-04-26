@@ -34,7 +34,7 @@
 
             <div class="field-block">
                 <label for="role">I am a</label>
-                <select id="role" name="role">
+                <select id="role" name="role" required>
                     <option value="buyer" {{ old('role') == 'buyer' ? 'selected' : '' }}>Buyer</option>
                     <option value="seller" {{ old('role') == 'seller' ? 'selected' : '' }}>Seller</option>
                 </select>
